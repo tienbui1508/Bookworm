@@ -35,6 +35,9 @@ struct DetailView: View {
                 .font(.title)
                 .foregroundColor(.secondary)
             
+            Text("Added: " + (book.date?.formatted(date: .long, time: .omitted) ?? "Unknown date"))
+                .foregroundColor(.secondary)
+           
             Text(book.review ?? "No review")
                 .padding()
             

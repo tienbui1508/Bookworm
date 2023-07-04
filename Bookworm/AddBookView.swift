@@ -17,6 +17,15 @@ struct AddBookView: View {
     @State private var genre = "Fantasy"
     @State private var review = ""
     
+    private var validDetails: Bool {
+        if title.isReallyEmpty
+            || author.isReallyEmpty || genre.isReallyEmpty {
+            return false
+        }
+        
+        return true
+    }
+    
     let genres =  ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
     var body: some View {
@@ -31,7 +40,7 @@ struct AddBookView: View {
                             Text($0)
                         }
                     }
-                }
+                                    }
                 
                 Section {
                     TextEditor(text: $review)
@@ -49,14 +58,22 @@ struct AddBookView: View {
                         newBook.rating = Int16(rating)
                         newBook.genre = genre
                         newBook.review = review
-                        
+                        newBook.date = Date.now
+                      
                         try? moc.save()
                         dismiss()
                     }
+                    .disabled(validDetails == false)
                 }
             }
             .navigationTitle("Add Book")
         }
+    }
+}
+
+extension String {
+    var isReallyEmpty: Bool {
+        self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 }
 
